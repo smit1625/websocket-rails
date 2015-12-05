@@ -145,9 +145,9 @@ module WebsocketRails
     def thin_defaults
       {
         :port => standalone_port,
-        :pid => "#{Rails.root}/tmp/pids/websocket_rails.pid",
-        :log => "#{Rails.root}/log/websocket_rails_server.log",
-        :tag => 'websocket_rails',
+        :pid => "#{Rails.root}/tmp/pids/websocket_rails_#{Rails.env}.pid",
+        :log => "#{Rails.root}/log/websocket_rails_#{Rails.env}_server.log",
+        :tag => "websocket_rails_#{Rails.env}",
         :rackup => "#{Rails.root}/config.ru",
         :threaded => false,
         :daemonize => daemonize?,
@@ -163,6 +163,13 @@ module WebsocketRails
 
     def default_ping_interval=(interval)
       @default_ping_interval = interval.to_i
+    end
+
+    def run_test_server
+      @run_test_server ||= Rails.env.development?
+    end
+    def run_test_server=(v)
+      @run_test_server = v
     end
 
   end
