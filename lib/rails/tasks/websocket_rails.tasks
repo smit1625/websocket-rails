@@ -11,6 +11,7 @@ namespace :websocket_rails do
 
     start_the_server = lambda do
       Thin::Controllers::Controller.new(options).start
+      puts "Websocket Rails Standalone Server listening on port #{options[:port]}"
       if WebsocketRails.config.run_test_server && !Rails.env.test?
         Rails.env = :test
         options = WebsocketRails.config.thin_options
@@ -18,8 +19,6 @@ namespace :websocket_rails do
       end
     end
     options[:daemonize] ? fork { start_the_server[] } : start_the_server[]
-
-    puts "Websocket Rails Standalone Server listening on port #{options[:port]}"
   end
 
   desc 'Stop the WebsocketRails standalone server.'
