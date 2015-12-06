@@ -13,6 +13,7 @@ namespace :websocket_rails do
       Thin::Controllers::Controller.new(options).start
       puts "Websocket Rails Standalone Server listening on port #{opts[:port]}"
       if WebsocketRails.config.run_test_server
+        puts "Booting up test server..."
         Thin::Controllers::Controller.new(
           WebsocketRails.config.thin_defaults(:test)).start
       end
@@ -32,8 +33,9 @@ namespace :websocket_rails do
 
     Thin::Controllers::Controller.new(options).stop
     if WebsocketRails.config.run_test_server
-      options = WebsocketRails.config.thin_defaults(:test)
-      Thin::Controllers::Controller.new(options).stop
+      puts 'Shutting down test server...'
+      Thin::Controllers::Controller.new(
+        WebsocketRails.config.thin_defaults(:test)).stop
     end
   end
 end

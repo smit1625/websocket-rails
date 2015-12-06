@@ -126,8 +126,8 @@ module WebsocketRails
       @standalone = standalone
     end
 
-    def standalone_port
-      @standalone_port ||= '3001'
+    def standalone_port(env=Rails.env)
+      @standalone_port ||= ( env == :test ? '3002' : '3001' )
     end
 
     def standalone_port=(port)
@@ -144,7 +144,7 @@ module WebsocketRails
 
     def thin_defaults(env=Rails.env)
       {
-        :port => standalone_port,
+        :port => standalone_port(env),
         :pid => "#{Rails.root}/tmp/pids/websocket_rails_#{env}.pid",
         :log => "#{Rails.root}/log/websocket_rails_#{env}_server.log",
         :tag => "websocket_rails_#{env}",
