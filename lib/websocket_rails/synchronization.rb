@@ -142,9 +142,13 @@ module WebsocketRails
     end
 
     def remove_server(token)
-      ruby_redis.srem "websocket_rails.active_servers", token
-      info "Server Removed: #{token}"
-      EM.stop
+      begin
+        ruby_redis.srem "websocket_rails.active_servers", token
+        info "Server Removed: #{token}"
+      rescue Errno::ECONNREFUSED
+        info "Server Refused Connection: #{token}"
+        EM.stop
+      end
     end
 
     def register_user(connection)
