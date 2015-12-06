@@ -142,12 +142,12 @@ module WebsocketRails
       @thin_options = thin_defaults.merge(options)
     end
 
-    def thin_defaults
+    def thin_defaults(env=Rails.env)
       {
         :port => standalone_port,
-        :pid => "#{Rails.root}/tmp/pids/websocket_rails_#{Rails.env}.pid",
-        :log => "#{Rails.root}/log/websocket_rails_#{Rails.env}_server.log",
-        :tag => "websocket_rails_#{Rails.env}",
+        :pid => "#{Rails.root}/tmp/pids/websocket_rails_#{env}.pid",
+        :log => "#{Rails.root}/log/websocket_rails_#{env}_server.log",
+        :tag => "websocket_rails_#{env}",
         :rackup => "#{Rails.root}/config.ru",
         :threaded => false,
         :daemonize => daemonize?,
